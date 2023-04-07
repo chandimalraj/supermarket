@@ -2,6 +2,7 @@ package com.chandimal.supermarket.service.impl;
 
 import com.chandimal.supermarket.dto.request.CustomerSaveDto;
 import com.chandimal.supermarket.entity.Customer;
+import com.chandimal.supermarket.exception.DuplicateDataException;
 import com.chandimal.supermarket.repo.CustomerRepo;
 import com.chandimal.supermarket.service.CustomerService;
 import com.chandimal.supermarket.util.mappers.ItemMapper;
@@ -19,14 +20,18 @@ public class CustomerServiceIMPL implements CustomerService {
 
     @Override
     public String saveCustomer(CustomerSaveDto customerSaveDto) {
-        Customer customer1 = itemMapper.toEntity(customerSaveDto);
 
-        Customer customer = new Customer(
-                customerSaveDto.getCustomerId(),
-                customerSaveDto.getCustomerName(),
-                customerSaveDto.getCustomerEmail()
-        );
-        customerRepo.save(customer1);
+        try {
+
+            Customer customer1 = itemMapper.toEntity(customerSaveDto);
+            customerRepo.save(customer1);
+
+        }catch (Exception e){
+
+          throw new DuplicateDataException("email already registered");
+
+        }
+
         return "saved " + customerSaveDto.getCustomerName();
     }
 }

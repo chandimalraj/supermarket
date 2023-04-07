@@ -2,8 +2,12 @@ package com.chandimal.supermarket.controller;
 
 import com.chandimal.supermarket.dto.request.CustomerSaveDto;
 import com.chandimal.supermarket.service.CustomerService;
+import com.chandimal.supermarket.util.StandardResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("api/v1/customer")
@@ -16,8 +20,12 @@ public class CustomerController {
     @PostMapping(
             path = "/save"
     )
-    public String customerSave(@RequestBody CustomerSaveDto customerSaveDto){
+    public ResponseEntity<StandardResponse> customerSave(@RequestBody CustomerSaveDto customerSaveDto){
        String msg = customerService.saveCustomer(customerSaveDto);
-       return msg;
+        ResponseEntity<StandardResponse> response = new ResponseEntity<>(
+                new StandardResponse(200,"customer saved succefully",msg),
+                HttpStatus.CREATED
+        );
+       return response;
     }
 }
