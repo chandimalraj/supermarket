@@ -1,5 +1,6 @@
 package com.chandimal.supermarket.controller;
 
+import com.chandimal.supermarket.dto.request.CustomerLoginDto;
 import com.chandimal.supermarket.dto.request.CustomerSaveDto;
 import com.chandimal.supermarket.service.CustomerService;
 import com.chandimal.supermarket.util.StandardResponse;
@@ -21,11 +22,23 @@ public class CustomerController {
             path = "/save"
     )
     public ResponseEntity<StandardResponse> customerSave(@RequestBody CustomerSaveDto customerSaveDto){
-       String msg = customerService.saveCustomer(customerSaveDto);
+        String msg = customerService.saveCustomer(customerSaveDto);
         ResponseEntity<StandardResponse> response = new ResponseEntity<>(
                 new StandardResponse(200,"customer saved succefully",msg),
                 HttpStatus.CREATED
         );
        return response;
+    }
+
+    @PostMapping(
+            path = "/login"
+    )
+    public ResponseEntity<StandardResponse> customerLogin(@RequestBody CustomerLoginDto customerLoginDto){
+        String msg = customerService.loginCustomer(customerLoginDto);
+        ResponseEntity<StandardResponse> response = new ResponseEntity<>(
+                new StandardResponse(200,"customer login succefully",msg),
+                HttpStatus.CREATED
+        );
+        return response;
     }
 }
