@@ -30,6 +30,13 @@ public class Customer {
     @Setter
     private String password;
 
+    public Customer(String customerName, String customerEmail, String contact, String password) {
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+        this.contact = contact;
+        this.password = password;
+    }
+
     //setter method for saving password in hashing method
     public void setPassword(String password){
 

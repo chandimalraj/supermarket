@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class CustomerSaveDto {
 
-    private int customerId;
     private String customerName;
     private String customerEmail;
     private String contact;
     private String password;
+
 }

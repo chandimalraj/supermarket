@@ -11,7 +11,6 @@ import com.chandimal.supermarket.util.mappers.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -26,10 +25,15 @@ public class CustomerServiceIMPL implements CustomerService {
     @Override
     public String saveCustomer(CustomerSaveDto customerSaveDto) {
 
-        try {
+        Customer customer = new Customer(
+                customerSaveDto.getCustomerName(),
+                customerSaveDto.getCustomerEmail(),
+                customerSaveDto.getContact(),
+                customerSaveDto.getPassword()
+        );
 
-            Customer customer1 = itemMapper.toEntity(customerSaveDto);
-            customerRepo.save(customer1);
+        try {
+            customerRepo.save(customer);
 
         }catch (Exception e){
 
@@ -59,7 +63,7 @@ public class CustomerServiceIMPL implements CustomerService {
 
             throw new NotFoundException("user not found");
         }
-        
+
         if(matches){
             return "password matches";
         }

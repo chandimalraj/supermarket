@@ -15,7 +15,7 @@ public class AppWideExceptionHandler {
     public ResponseEntity<StandardResponse> handleDuplicateDataException(DuplicateDataException e){
         ResponseEntity<StandardResponse> response = new ResponseEntity<>(
                 new StandardResponse(500,"Duplicate Data Insert", e.getMessage() ),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.OK
         );
         return response;
     }
