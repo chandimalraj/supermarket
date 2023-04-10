@@ -1,8 +1,10 @@
 package com.chandimal.supermarket.controller;
 
 import com.chandimal.supermarket.config.JwtTokenUtil;
+import com.chandimal.supermarket.dto.request.CustomerLoginDto;
 import com.chandimal.supermarket.dto.request.JwtRequestDto;
 import com.chandimal.supermarket.dto.response.JwtResponseDto;
+import com.chandimal.supermarket.service.CustomerService;
 import com.chandimal.supermarket.service.impl.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("authenticate")
+@RequestMapping("/authenticate")
 @CrossOrigin
 public class JwtAuthenticationController {
 
@@ -30,16 +32,20 @@ public class JwtAuthenticationController {
     @Autowired
     private UserDetailsService jwtInMemoryUserDetailsService;
 
+    @Autowired
+    private CustomerService customerService;
+
    //@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @PostMapping(path = "/customer")
-    public ResponseEntity<?> generateAuthenticationToken(@RequestBody JwtRequestDto authenticationRequest)
+    public ResponseEntity<?> generateAuthenticationToken(@RequestBody CustomerLoginDto authenticationRequest)
             throws Exception {
 
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        //authentication process
+        authenticate(authenticationRequest.getCustomerEmail(), authenticationRequest.getPassword());
 
         final UserDetails userDetails = jwtInMemoryUserDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
-
+                .loadUserByUsername(authenticationRequest.getCustomerEmail());
+        System.out.println(userDetails);
         final String token = jwtTokenUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponseDto(token));
@@ -48,7 +54,7 @@ public class JwtAuthenticationController {
     private void authenticate(String username, String password) throws Exception {
 
         Objects.requireNonNull(username);
-        Objects.requireNonNull(password);
+       Objects.requireNonNull(password);
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

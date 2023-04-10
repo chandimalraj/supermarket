@@ -9,8 +9,12 @@ import com.chandimal.supermarket.repo.CustomerRepo;
 import com.chandimal.supermarket.service.CustomerService;
 import com.chandimal.supermarket.util.mappers.ItemMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,6 +26,9 @@ public class CustomerServiceIMPL implements CustomerService {
     @Autowired
     ItemMapper itemMapper;
 
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
+
     @Override
     public String saveCustomer(CustomerSaveDto customerSaveDto) {
 
@@ -29,7 +36,7 @@ public class CustomerServiceIMPL implements CustomerService {
                 customerSaveDto.getCustomerName(),
                 customerSaveDto.getCustomerEmail(),
                 customerSaveDto.getContact(),
-                customerSaveDto.getPassword()
+                bcryptEncoder.encode(customerSaveDto.getPassword())
         );
 
         try {
@@ -45,7 +52,7 @@ public class CustomerServiceIMPL implements CustomerService {
     }
 
     @Override
-    public String loginCustomer(CustomerLoginDto customerLoginDto) {
+    public UserDetails loginCustomer(CustomerLoginDto customerLoginDto) {
 
         String email = customerLoginDto.getCustomerEmail();
         String password = customerLoginDto.getPassword();
@@ -59,16 +66,19 @@ public class CustomerServiceIMPL implements CustomerService {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             matches = encoder.matches(password, customers.get(0).getPassword());
 
-        }catch (Exception e){
 
+        }catch (Exception e){
             throw new NotFoundException("user not found");
         }
 
-        if(matches){
-            return "password matches";
-        }
-        else{
-            return "password does not match";
-        }
+        return new org.springframework.security.core.userdetails.User(customers.get(0).getCustomerEmail(), customers.get(0).getPassword(),
+                new ArrayList<>());
+
+//        if(matches){
+//            return "password matches";
+//        }
+//        else{
+//            return "password does not match";
+//        }
     }
 }

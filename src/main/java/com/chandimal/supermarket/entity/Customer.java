@@ -3,6 +3,7 @@ import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
@@ -27,8 +28,11 @@ public class Customer {
     private String contact;
 
     @Column(name = "password")
-    @Setter
+//    @Setter
     private String password;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<Order> orders;
 
     public Customer(String customerName, String customerEmail, String contact, String password) {
         this.customerName = customerName;
@@ -38,10 +42,11 @@ public class Customer {
     }
 
     //setter method for saving password in hashing method
-    public void setPassword(String password){
-
-       this.password = BCrypt.hashpw(password,BCrypt.gensalt());
-
-   }
+//    public void setPassword(String password){
+//
+//       this.password = BCrypt.hashpw(password,BCrypt.gensalt());
+//
+//
+//   }
 
 }

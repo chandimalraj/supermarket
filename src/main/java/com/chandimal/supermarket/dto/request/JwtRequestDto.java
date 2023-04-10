@@ -15,4 +15,5 @@ public class JwtRequestDto  {
 
     private String username;
     private String password;
+
 }
