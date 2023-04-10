@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 public class OrderDetailsSaveDto {
 
     private String itemName;
-    private double Quantity;
+    private double quantity;
     private Double amount;
     private int items;
-    private int orders;
+   // private int orders;
 
 }

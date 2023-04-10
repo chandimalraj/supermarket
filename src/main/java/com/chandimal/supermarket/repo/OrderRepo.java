@@ -1,17 +1,12 @@
 package com.chandimal.supermarket.repo;
 
-import com.chandimal.supermarket.entity.Customer;
+import com.chandimal.supermarket.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 @EnableJpaRepositories
-public interface CustomerRepo extends JpaRepository<Customer,Integer> {
+public interface OrderRepo extends JpaRepository<Order,Integer> {
 
-    List<Customer> findByCustomerEmailEquals(String email);
-
-    Customer getCustomerByCustomerIdEquals(int customer);
 }
