@@ -42,7 +42,4 @@ public class Item {
     @OneToMany(mappedBy = "items")
     private Set<OrderDetails> orderDetails;
 
-
-
-
 }
